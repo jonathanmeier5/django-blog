@@ -2,6 +2,7 @@ FROM python:3.7
 MAINTAINER Jonathan Meier <jonathan.w.meier@gmail.com>
 
 ENV PROJECT_ROOT=/usr/local/src/django-blog/
+ENV APP_DIR ${PROJECT_ROOT}/src
 
 RUN pip install poetry
 
@@ -11,8 +12,10 @@ COPY pyproject.toml poetry.lock ${PROJECT_ROOT}/
 
 RUN poetry config virtualenvs.create false
 RUN poetry install
- 
-WORKDIR ${PROJECT_ROOT}/src
+
+COPY ./src/ ${APP_DIR}/
+
+WORKDIR ${APP_DIR}
 
 ENV PYTHONUNBUFFERED=1
 
