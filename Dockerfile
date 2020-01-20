@@ -13,10 +13,15 @@ COPY pyproject.toml poetry.lock ${PROJECT_ROOT}/
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
+COPY files/ /
+RUN chmod +x /usr/local/bin/*
+
 COPY ./src/ ${APP_DIR}/
 
 WORKDIR ${APP_DIR}
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
